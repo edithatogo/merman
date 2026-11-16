@@ -31,13 +31,18 @@ jobs:
             parity: false
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Install cargo-nextest
-        uses: taiki-e/install-action@nextest
+        uses: taiki-e/install-action@e800962fea8b802cd1bd32c4e6f08fbda4bb0048 # nextest
 
       - name: Free disk space (Ubuntu)
         if: runner.os == 'Linux'
@@ -54,7 +59,7 @@ jobs:
           df -h
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           cache-targets: false
 
@@ -90,20 +95,25 @@ jobs:
       TYPST_CLI_VERSION: "0.14.2"
       TYPST_COMPAT_CLI_VERSION: "0.15.0"
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
         with:
           targets: wasm32-unknown-unknown
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           cache-targets: false
 
       - name: Install wasm-tools
-        uses: taiki-e/install-action@wasm-tools
+        uses: taiki-e/install-action@f48af4c34d9f7b806f002f34d9cd3cfc50f7f9ca # wasm-tools
 
       - name: Check WASM size budgets
         run: cargo run -p xtask -- wasm-size-matrix --budget-file docs/release/WASM_SIZE_BUDGETS.json
@@ -177,7 +187,12 @@ jobs:
     name: platform-script-syntax
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Check Python platform scripts
         run: |
@@ -203,18 +218,23 @@ jobs:
       CARGO_PROFILE_TEST_DEBUG: "0"
       KOTLIN_VERSION: "1.9.24"
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
         with:
           targets: aarch64-linux-android
 
       - name: Install cargo-nextest
-        uses: taiki-e/install-action@nextest
+        uses: taiki-e/install-action@e800962fea8b802cd1bd32c4e6f08fbda4bb0048 # nextest
 
       - name: Setup JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           distribution: temurin
           java-version: "17"
@@ -231,12 +251,12 @@ jobs:
           "$RUNNER_TEMP/kotlin/kotlinc/bin/kotlinc" -version
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
         with:
           cache-targets: false
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: "3.38.3"
           channel: stable
@@ -252,18 +272,23 @@ jobs:
     name: python-uniffi-wheel
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       - name: Build and smoke Python UniFFI wheel
         run: python scripts/build-python-uniffi-wheel.py --run-smoke
@@ -275,13 +300,18 @@ jobs:
     name: c-ffi-example
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       - name: Build merman C ABI library
         run: cargo build -p merman-ffi --release
@@ -299,16 +329,21 @@ jobs:
     name: flutter-package-check
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: "3.38.3"
           channel: stable
@@ -331,15 +366,20 @@ jobs:
     name: apple-ffi-smoke
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
         with:
           targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios,aarch64-apple-darwin,x86_64-apple-darwin
 
       - name: Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       - name: Build Apple XCFramework
         env:

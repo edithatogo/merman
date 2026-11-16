@@ -97,8 +97,13 @@ jobs:
     name: perf-contracts
     runs-on: ubuntu-24.04
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
       - name: Checkout head
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           path: head
           fetch-depth: 1
@@ -134,8 +139,13 @@ jobs:
       CARGO_PROFILE_DEV_DEBUG: "0"
       CARGO_PROFILE_TEST_DEBUG: "0"
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
       - name: Checkout head
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           path: head
           fetch-depth: 1
@@ -143,7 +153,7 @@ jobs:
           repository: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name || inputs.head_repository || github.repository }}
 
       - name: Checkout base
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           path: base
           fetch-depth: 1
@@ -151,7 +161,7 @@ jobs:
           repository: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.repo.full_name || inputs.base_repository || github.repository }}
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Run self regression comparison
         working-directory: head
@@ -179,7 +189,7 @@ jobs:
 
       - name: Upload regression artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: perf-regression
           path: |
@@ -237,8 +247,13 @@ jobs:
       CARGO_PROFILE_DEV_DEBUG: "0"
       CARGO_PROFILE_TEST_DEBUG: "0"
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
       - name: Checkout head
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           path: head
           fetch-depth: 1
@@ -246,7 +261,7 @@ jobs:
           repository: ${{ github.event_name == 'workflow_dispatch' && inputs.head_repository || github.repository }}
 
       - name: Checkout mermaid-rs-renderer
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: 1jehuang/mermaid-rs-renderer
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.mmdr_ref || '859253415e69dce28bd65cd5a7c1d1ae8b39f4a1' }}
@@ -254,7 +269,7 @@ jobs:
           fetch-depth: 1
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@1.95.0
+        uses: dtolnay/rust-toolchain@1961bfc0c4a8bf07e0a0c98e1e2459c642ea70a0 # 1.95.0
 
       - name: Install mermaid-rs-renderer toolchain
         shell: bash
@@ -262,7 +277,7 @@ jobs:
 
       - name: Setup Node for Mermaid JS
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.include_mermaid_js }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: "22"
           cache: npm
@@ -296,7 +311,7 @@ jobs:
           python3 tools/bench/compare_mermaid_renderers.py "${args[@]}"
 
       - name: Upload reference artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: perf-reference
           path: |
