@@ -1,0 +1,16 @@
+{
+  "track_id": "serde_yaml_feature_gate_20261118",
+  "type": "dependency_qualification",
+  "status": "new",
+  "created_at": "2026-11-18",
+  "updated_at": "2026-11-18",
+  "description": "Serde/serde_json are already used appropriately. serde_yaml is optional for full-config and xtask; careless replacement would affect Mermaid parity and WASM footprint.",
+  "owners": [
+    "existing maintainers"
+  ],
+  "verification": {
+    "status": "not_run",
+    "commands": []
+  },
+  "capability_status": "planning_only"
+}
