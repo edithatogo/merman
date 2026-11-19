@@ -17,6 +17,11 @@ jobs:
     if: ${{ github.event_name != 'push' || !contains(github.ref_name, '-') }}
     runs-on: macos-15
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
       - name: Update Homebrew metadata
         shell: bash
         run: brew update
